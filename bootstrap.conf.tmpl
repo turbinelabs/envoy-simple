@@ -1,0 +1,63 @@
+{
+  "node": {
+    "id": "{{envOrDefault "ENVOY_NODE_ID" "default-node"}}",
+    "cluster": "{{envOrDefault "ENVOY_NODE_CLUSTER" "default-cluster"}}",
+    "locality": {
+      "zone": "{{envOrDefault "ENVOY_NODE_ZONE" "default-zone"}}"
+    }
+  },
+  "static_resources": {
+    "clusters": [
+      {
+        "name": "tbn-xds",
+        "type": "LOGICAL_DNS",
+        "connect_timeout": {
+          "seconds": "{{envOrDefault "ENVOY_XDS_CONNECT_TIMEOUT_SECS" "30"}}"
+        },
+        "lb_policy": "ROUND_ROBIN",
+        "hosts": [
+          {
+            "socket_address": {
+              "protocol": "TCP",
+              "address": "{{envOrDefault "ENVOY_XDS_HOST" "127.0.0.1"}}",
+              "port_value": "{{envOrDefault "ENVOY_XDS_PORT" "50000"}}"
+            }
+          }
+        ],
+        "http2_protocol_options": {
+          "max_concurrent_streams": 10
+        }
+      }
+    ]
+  },
+  "dynamic_resources": {
+    "lds_config": {
+      "api_config_source": {
+        "api_type": "GRPC",
+        "cluster_names": ["tbn-xds"],
+        "refresh_delay": {
+          "seconds": {{envOrDefault "ENVOY_XDS_REFRESH_DELAY_SECS" "10"}}
+        }
+      }
+    },
+    "cds_config": {
+      "api_config_source": {
+        "api_type": "GRPC",
+        "cluster_names": ["tbn-xds"],
+        "refresh_delay": {
+          "seconds": {{envOrDefault "ENVOY_XDS_REFRESH_DELAY_SECS" "10"}}
+        }
+      }
+    }
+  },
+  "admin":{
+    "access_log_path": "{{envOrDefault "ENVOY_ADMIN_LOG" "/dev/stdout"}}",
+    "address": {
+      "socket_address": {
+        "protocol": "TCP",
+        "address": "{{envOrDefault "ENVOY_ADMIN_IP" "0.0.0.0"}}",
+        "port_value": "{{envOrDefault "ENVOY_ADMIN_PORT" "9999"}}"
+      }
+    }
+  }
+}
