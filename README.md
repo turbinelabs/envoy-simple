@@ -13,10 +13,34 @@
 
 # envoy-simple
 
-The envoy-simple image is a simple xDS-configured envoy server, which can be
-easily configured with environment variables. By default it opens up an admin
-port on `0.0.0.0:9999`, and looks for an xDS server on `127.0.0.1:50000`. It
-supports the following environment variables:
+[![Apache 2.0](https://img.shields.io/badge/license-apache%202.0-blue.svg)](LICENSE)
+
+Envoy-simple is a Docker image of [Envoy proxy](https://envoyproxy.github.io)
+that makes it easy to configure Envoy from a dynamic control plane. Instead of
+an Envoy configuration file, envoy-simple pulls all its configuration over
+[Envoy's xDS APIs](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview).
+Configuring the container is as easy as setting a few environment variables:
+
+```bash
+$ docker run -d \
+  -e 'ENVOY_XDS_HOST=127.0.0.1' \
+  -e 'ENVOY_XDS_PORT=50000' \
+  -p 9999:9999 \
+  -p 80:80 \
+  turbinelabs/envoy-simple:0.15.1
+```
+
+If you're looking for an an Envoy configuration server,
+[Rotor](https://github.com/turbinelabs/rotor) is a fast, lightweight bridge
+between your service discovery and
+[Envoy](https://envoyproxy.github.io). Envoy-simple can point directly to Rotor.
+
+## Configuration
+
+By default, envoy-simple opens up an admin port on `0.0.0.0:9999`, and looks for an xDS
+server on `127.0.0.1:50000`.
+
+It supports the following environment variables:
 
 - **ENVOY_BASE_ID** (default: 0): sets the base ID so that multiple envoys can
   run on the same host
@@ -44,3 +68,18 @@ supports the following environment variables:
 
 Envoy logs are emitted on STDERR, and by default admin server request logging is
 sent to STDOUT.
+
+## Versioning
+
+Please see [Versioning of Turbine Labs Open Source Projects](http://github.com/turbinelabs/developer/blob/master/README.md#versioning).
+
+## Pull Requests
+
+Patches accepted! Please see
+[Contributing to Turbine Labs Open Source Projects](http://github.com/turbinelabs/developer/blob/master/README.md#contributing).
+
+## Code of Conduct
+
+All Turbine Labs open-sourced projects are released with a
+[Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in our
+projects you agree to abide by its terms, which will be carefully enforced.
