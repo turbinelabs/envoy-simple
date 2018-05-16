@@ -22,6 +22,7 @@ RUN go install github.com/turbinelabs/envtemplate
 
 # cleanup go
 RUN rm -rf /usr/local/go
+RUN rm -rf /go/src
 
 # cleanup git
 RUN DEBIAN_FRONTEND="noninteractive" apt-get remove -y git
