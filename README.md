@@ -27,7 +27,7 @@ $ docker run -d \
   -e 'ENVOY_XDS_PORT=50000' \
   -p 9999:9999 \
   -p 80:80 \
-  turbinelabs/envoy-simple:0.17.1
+  turbinelabs/envoy-simple:0.17.2
 ```
 
 If you're looking for an an Envoy configuration server,
