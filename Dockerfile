@@ -1,4 +1,4 @@
-FROM envoyproxy/envoy:b2e54ba70979ce7b1fc9d0c06acc11576013f8f9
+FROM envoyproxy/envoy:9c273391b532dc20e7300dd2306782494947aa57
 
 FROM phusion/baseimage:0.10.0
 
