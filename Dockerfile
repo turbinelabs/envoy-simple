@@ -1,6 +1,6 @@
 FROM envoyproxy/envoy:9c273391b532dc20e7300dd2306782494947aa57
 
-FROM turbinelabs/envtemplate:0.18.0
+FROM turbinelabs/envtemplate:0.18.1
 
 FROM phusion/baseimage:0.10.0
 
