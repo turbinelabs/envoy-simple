@@ -29,7 +29,8 @@ if [ -n "$ENVOY_LIGHTSTEP_ACCESS_TOKEN" ]; then
   # this simplifies templating logic to avoid checking for either the token or
   # token_file being set
   if [ -z "${ENVOY_LIGHTSTEP_ACCESS_TOKEN_FILE}" ]; then
-    ENVOY_LIGHTSTEP_ACCESS_TOKEN_FILE="/etc/envoy/lightstep-access-token"
+    # export so it's available to the envtemplate subprocess
+    export ENVOY_LIGHTSTEP_ACCESS_TOKEN_FILE="/etc/envoy/lightstep-access-token"
   fi
   echo $ENVOY_LIGHTSTEP_ACCESS_TOKEN > $ENVOY_LIGHTSTEP_ACCESS_TOKEN_FILE
 fi
