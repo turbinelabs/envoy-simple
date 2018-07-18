@@ -28,6 +28,48 @@
           "max_concurrent_streams": 10
         }
       }
+{{- if envOrDefault "ENVOY_ZIPKIN_COLLECTOR_HOST" "" }}
+      ,{
+        "name": "{{ envOrDefault "ENVOY_ZIPKIN_COLLECTOR_CLUSTER" "zipkin"}}",
+        "type": "LOGICAL_DNS",
+        "connect_timeout": {
+          "seconds": "{{envOrDefault "ENVOY_ZIPKIN_CONNECT_TIMEOUT_SECS" "30"}}"
+        },
+        "lb_policy": "ROUND_ROBIN",
+        "hosts": [
+          {
+            "socket_address": {
+              "protocol": "TCP",
+              "address": "{{env "ENVOY_ZIPKIN_COLLECTOR_HOST" }}",
+              "port_value": "{{envOrDefault "ENVOY_ZIPKIN_COLLECTOR_PORT" "9411"}}"
+            }
+          }
+        ],
+      }
+{{- end }}
+{{- if envOrDefault "ENVOY_LIGHTSTEP_ACCESS_TOKEN_FILE" "" }}
+      ,{
+        "name": "{{ envOrDefault "ENVOY_LIGHTSTEP_COLLECTOR_CLUSTER" "lightstep"}}",
+        "type": "LOGICAL_DNS",
+        "connect_timeout": {
+          "seconds": "{{envOrDefault "ENVOY_LIGHTSTEP_CONNECT_TIMEOUT_SECS" "30"}}"
+        },
+        "tls_context": {},
+        "lb_policy": "ROUND_ROBIN",
+        "hosts": [
+          {
+            "socket_address": {
+              "protocol": "TCP",
+              "address": "{{envOrDefault "ENVOY_LIGHTSTEP_COLLECTOR_HOST" "collector-grpc.lightstep.com"}}",
+              "port_value": "{{envOrDefault "ENVOY_LIGHTSTEP_COLLECTOR_PORT" "443"}}"
+            }
+          }
+        ],
+{{- /* the envoy collector host requires gRPC support */}}
+        "http2_protocol_options": {
+        }
+      }
+{{- end }}
     ]
   },
   "dynamic_resources": {
@@ -60,4 +102,26 @@
       }
     }
   }
+{{- if envOrDefault "ENVOY_LIGHTSTEP_ACCESS_TOKEN_FILE" "" }}
+  ,"tracing":{
+    "http": {
+      "name": "envoy.lightstep",
+      "config": {
+        "collector_cluster": "{{ envOrDefault "ENVOY_LIGHTSTEP_COLLECTOR_CLUSTER" "lightstep"}}",
+        "access_token_file": "{{ envOrDefault "ENVOY_LIGHTSTEP_ACCESS_TOKEN_FILE" "/etc/envoy/lightstep-access-token"}}"
+      }
+    }
+  }
+{{- end }}
+{{- if envOrDefault "ENVOY_ZIPKIN_COLLECTOR_HOST" "" }}
+  ,"tracing":{
+    "http": {
+      "name": "envoy.zipkin",
+      "config": {
+        "collector_cluster": "{{ envOrDefault "ENVOY_ZIPKIN_COLLECTOR_CLUSTER" "zipkin"}}",
+        "collector_endpoint": "{{ envOrDefault "ENVOY_ZIPKIN_COLLECTOR_ENDPOINT" "/api/v1/spans"}}"
+      }
+    }
+  }
+{{- end }}
 }

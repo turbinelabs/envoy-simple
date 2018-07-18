@@ -69,6 +69,65 @@ It supports the following environment variables:
 Envoy logs are emitted on STDERR, and by default admin server request logging is
 sent to STDOUT.
 
+## Tracing
+
+You can configure one or more tracers in Envoy by setting appropriate
+environment variables. Tracers need a destination to send spans, which requires
+a static cluster. Envoy-simple will create both the static cluster and tracing
+configuration elements for you.
+
+To generate spans you'll need to add tracing information to your
+[HTTP connection manager](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#envoy-api-msg-config-filter-network-http-connection-manager-v2-httpconnectionmanager-tracing)
+
+For Zipkin, all you need to specify is the collector host if you're running a
+default zipkin build, although you can override the cluster name, port, and
+endpoint if you like.
+
+```bash
+$ docker run -d \
+  -e 'ENVOY_XDS_HOST=127.0.0.1' \
+  -e 'ENVOY_XDS_PORT=50000' \
+  -e 'ENVOY_ZIPKIN_COLLECTOR_HOST=zipkin.example.com'
+  -p 9999:9999 \
+  -p 80:80 \
+  turbinelabs/envoy-simple:0.18.1
+```
+
+- **ENVOY_ZIPKIN_COLLECTOR_HOST** set the zipkin server hostname
+- **ENVOY_ZIPKIN_COLLECTOR_PORT** (defaults to 9411) set the zipkin server port
+- **ENVOY_ZIPKIN_COLLECTOR_CLUSTER** (defaults to zipkin) set the name static
+  cluster in the Envoy config
+- **ENVOY_ZIPKIN_COLLECTOR_ENDPOINT** (defaults to /api/vi/spans) set the
+  endpoint Envoy will send spans to
+- **ENVOY_ZIPKIN_CONNECT_TIMEOUT_SECS** (defaults to 30) set the connect timeout
+  for the zipkin cluster
+
+For LightStep, all you need to specify is the location of the access token
+file. Note that you will also need to make this file available in the docker
+container, using
+
+```bash
+$ docker run -d \
+  -e 'ENVOY_XDS_HOST=127.0.0.1' \
+  -e 'ENVOY_XDS_PORT=50000' \
+  -e 'ENVOY_LIGHTSTEP_ACCESS_TOKEN=<your lightstep access token>
+  -p 9999:9999 \
+  -p 80:80 \
+  turbinelabs/envoy-simple:0.18.1
+```
+
+- **ENVOY_LIGHTSTEP_ACCESS_TOKEN** set the LightStep access token
+- **ENVOY_LIGHTSTEP_COLLECTOR_HOST** (defaults to collector-grpc.lightstep.com) set
+  the hostname for the LightStep collector. Note that this collector _must_
+  support gRPC for sending traces
+- **ENVOY_LIGHTSTEP_COLLECTOR_PORT**  (defaults to 443) set the port number of
+  the LightStep collector
+- **ENVOY_LIGHTSTEP_COLLECTOR_CLUSTER** (defaults to lightstep) set the name of
+  the static LightStep collector clutser in the Envoy config
+- **ENVOY_LIGHTSTEP_CONNECT_TIMEOUT_SECS** (defaults to 30) set the connect timeout
+  for the LightStep cluster
+
+
 ## Versioning
 
 Please see [Versioning of Turbine Labs Open Source Projects](http://github.com/turbinelabs/developer/blob/master/README.md#versioning).
