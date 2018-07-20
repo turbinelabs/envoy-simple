@@ -76,7 +76,13 @@
     "lds_config": {
       "api_config_source": {
         "api_type": "GRPC",
-        "cluster_names": ["tbn-xds"],
+        "grpc_services": [
+          {
+            "envoy_grpc": {
+              "cluster_name": "tbn-xds"
+            }
+          }
+        ],
         "refresh_delay": {
           "seconds": {{envOrDefault "ENVOY_XDS_REFRESH_DELAY_SECS" "10"}}
         }
@@ -85,7 +91,13 @@
     "cds_config": {
       "api_config_source": {
         "api_type": "GRPC",
-        "cluster_names": ["tbn-xds"],
+        "grpc_services": [
+          {
+            "envoy_grpc": {
+              "cluster_name": "tbn-xds"
+            }
+          }
+        ],
         "refresh_delay": {
           "seconds": {{envOrDefault "ENVOY_XDS_REFRESH_DELAY_SECS" "10"}}
         }

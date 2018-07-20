@@ -1,4 +1,4 @@
-FROM envoyproxy/envoy:9c273391b532dc20e7300dd2306782494947aa57
+FROM envoyproxy/envoy:17efc838016101f7607fbb9a27151da606e0bd13
 
 FROM turbinelabs/envtemplate:0.18.1
 
