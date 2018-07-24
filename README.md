@@ -27,7 +27,7 @@ $ docker run -d \
   -e 'ENVOY_XDS_PORT=50000' \
   -p 9999:9999 \
   -p 80:80 \
-  turbinelabs/envoy-simple:0.18.1
+  turbinelabs/envoy-simple:0.18.2
 ```
 
 If you're looking for an an Envoy configuration server,
@@ -90,7 +90,7 @@ $ docker run -d \
   -e 'ENVOY_ZIPKIN_COLLECTOR_HOST=zipkin.example.com'
   -p 9999:9999 \
   -p 80:80 \
-  turbinelabs/envoy-simple:0.18.1
+  turbinelabs/envoy-simple:0.18.2
 ```
 
 - **ENVOY_ZIPKIN_COLLECTOR_HOST** set the zipkin server hostname
@@ -113,7 +113,7 @@ $ docker run -d \
   -e 'ENVOY_LIGHTSTEP_ACCESS_TOKEN=<your lightstep access token>
   -p 9999:9999 \
   -p 80:80 \
-  turbinelabs/envoy-simple:0.18.1
+  turbinelabs/envoy-simple:0.18.2
 ```
 
 - **ENVOY_LIGHTSTEP_ACCESS_TOKEN** set the LightStep access token
