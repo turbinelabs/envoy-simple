@@ -24,6 +24,10 @@ if [ -n "$ENVOY_BASE_ID" ]; then
   ENVOY_ARGS="$ENVOY_ARGS --base-id $ENVOY_BASE_ID"
 fi
 
+if [ -n "$ENVOY_ADMIN_LOG" ]; then
+  mkdir -p $(dirname $ENVOY_ADMIN_LOG)
+fi
+
 if [ -n "$ENVOY_LIGHTSTEP_ACCESS_TOKEN" ]; then
   # if the token file is unset, default it to /etc/envoy/lightstep-access-token.
   # this simplifies templating logic to avoid checking for either the token or
