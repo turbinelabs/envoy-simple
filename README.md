@@ -56,6 +56,12 @@ It supports the following environment variables:
   connect to xDS services, in seconds
 - **ENVOY_XDS_REFRESH_DELAY_SECS** (default: `10`): sets the delay between calls
   refresh calls to xDS
+- **ENVOY_XDS_KEEPALIVE_PROBES**: number of consecutive TCP keep-alive failures
+  encountered before the xDS connection is closed and re-opened
+- **ENVOY_XDS_KEEPALIVE_TIME_SECS**: how long, in seconds, after the TCP
+  connection goes idle before TCP keep-alive checks begin
+- **ENVOY_XDS_KEEPALIVE_INTERVAL_SECS**: the interval, in seconds, between TCP
+  keep-alive checks
 - **ENVOY_LOG_LEVEL** (default: `info`): sets the log level to one of:
   - `trace`
   - `debug`

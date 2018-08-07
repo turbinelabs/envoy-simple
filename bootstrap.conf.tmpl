@@ -26,6 +26,19 @@
         ],
         "http2_protocol_options": {
           "max_concurrent_streams": 10
+        },
+        "upstream_connection_options": {
+          "tcp_keepalive": {
+            "keepalive_probes": {
+              "value": {{envOrDefault "ENVOY_XDS_KEEPALIVE_PROBES" "3"}}
+            },
+            "keepalive_time": {
+              "value": {{envOrDefault "ENVOY_XDS_KEEPALIVE_TIME_SECS" "30"}}
+            },
+            "keepalive_interval": {
+              "value": {{envOrDefault "ENVOY_XDS_KEEPALIVE_INTERVAL_SECS" "15"}}
+            }
+          }
         }
       }
 {{- if envOrDefault "ENVOY_ZIPKIN_COLLECTOR_HOST" "" }}
