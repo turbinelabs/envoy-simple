@@ -2,7 +2,7 @@ FROM envoyproxy/envoy:17efc838016101f7607fbb9a27151da606e0bd13
 
 FROM turbinelabs/envtemplate:0.18.2
 
-FROM phusion/baseimage:0.10.0
+FROM phusion/baseimage:0.10.2
 
 # upgrade/install deps
 RUN apt-get update
